@@ -17,6 +17,12 @@ import EditMember from '../screen/kasir/editMember';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DetailKategoryKasir from '../screen/kasir/detailKategoryKasir';
 import KategoryBarangKasir from './kasir';
+import InventoryStaff from '../screen/staff/inventoryStaff';
+import CategoryStaff from '../screen/staff/kategoryStaff';
+import PembelianStaff from '../screen/staff/pembelianStaff';
+import PengeluaranStaff from '../screen/staff/pengluaranStaff';
+import LaporanBulananPimpinan from '../screen/pimpinan/laporanBulananPimpinan';
+import LaporanHarianPimpinan from '../screen/pimpinan/laporanHarianPimpinan';
 
 const Stack = createStackNavigator();
 const Top = createMaterialTopTabNavigator();
@@ -48,10 +54,18 @@ function Navigation() {
         />
         {/* untuk Pimpinan */}
         <Stack.Screen name="pimpinan" component={HomePimpinan} />
+        <Stack.Screen name="LaporanBulananPimpinan" component={LaporanBulananPimpinan} />
+        <Stack.Screen name="LaporanHarianPimpinan" component={LaporanHarianPimpinan} />
+
         {/* untuk Member */}
         <Stack.Screen name="member" component={HomeMember} />
         {/* untuk Staff */}
         <Stack.Screen name="staff" component={HomeStaff} />
+        <Stack.Screen name="InventoryStaff" component={InventoryStaff} />
+        <Stack.Screen name="CategoryStaff" component={CategoryStaff} />
+        <Stack.Screen name="PembelianStaff" component={PembelianStaff} />
+        <Stack.Screen name="PengeluaranStaff" component={PengeluaranStaff} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

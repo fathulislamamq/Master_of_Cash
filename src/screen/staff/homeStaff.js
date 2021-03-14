@@ -79,7 +79,7 @@ export default class HomeStaff extends Component {
 
             <View style={styles.category}>
               <TouchableOpacity
-                onPress={() => this.keluar()}
+                onPress={() => this.props.navigation.navigate('InventoryStaff')}
                 style={styles.textContainer}>
                 <Image
                   source={require('../../assets/icon/inventory.png')}
@@ -87,21 +87,29 @@ export default class HomeStaff extends Component {
                 />
                 <Text style={styles.categoryText}>Inventory</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.textContainer}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('CategoryStaff')}
+                
+                style={styles.textContainer}>
                 <Image
                   source={require('../../assets/icon/grid.png')}
                   style={styles.categoryIcon}
                 />
                 <Text style={styles.categoryText}>Kategori</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.textContainer}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('PengeluaranStaff')}
+              
+              style={styles.textContainer}>
                 <Image
                   source={require('../../assets/icon/electronics.png')}
                   style={styles.categoryIcon}
-                />
+                  />
                 <Text style={styles.categoryText}>Pengeluaran</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.textContainer}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('PembelianStaff')}
+                style={styles.textContainer}>
                 <Image
                   source={require('../../assets/icon/shopping-basket.png')}
                   style={styles.categoryIcon}

@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {Component} from 'react';
 import {
   Text,
@@ -9,24 +8,9 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+// import CheckBox from '@react-native-community/checkbox';
 
-export default class CashierDash extends Component {
-  componentDidMount() {
-    AsyncStorage.getItem('token').then((token) => {
-      if (token != null) {
-        this.setState({token: token});
-        // this.lihat();
-      } else {
-        console.log('gak ada token');
-      }
-    });
-  }
-
-  keluar = () => {
-    AsyncStorage.clear();
-    this.props.navigation.replace('Login');
-  };
-
+export default class PengeluaranStaff extends Component {
   render() {
     return (
       <View style={{flex: 1}}>
@@ -39,67 +23,151 @@ export default class CashierDash extends Component {
                   style={styles.headerIcon}
                 />
                 <View style={styles.categoryContainer}>
-                  <Text style={styles.categoryText}>Dashboard</Text>
+                  {/* <Image
+                  source={require('../../assets/icon/snacks.png')}
+                  style={styles.categoryIcon}
+                /> */}
+                  <Text style={styles.categoryText}>Pengeluaran</Text>
                 </View>
-
                 <Image
                   source={require('../../assets/icon/round-account-button-with-user-inside.png')}
                   style={styles.headerIconRight}
                 />
               </View>
-
-              <Text style={styles.categoryText}>Laporan Hari ini</Text>
+              {/* <View style={styles.headerDash}>
+              <Image
+                source={require('../../assets/icon/city-buildings-silhouette.png')}
+                style={styles.dashIcon}
+              />
+              <Text style={styles.headerText}>Dashboard</Text>
+            </View> */}
               <View style={styles.listContainer}>
+                {/* <Image
+                  source={require('../../assets/icon/watch.png')}
+                  style={styles.listIcon}
+                /> */}
                 <View>
-                  <Text style={styles.listText}>Hari</Text>
-
-                  <Text style={styles.qtyText}>Qty: Terjual</Text>
+                  <Text style={styles.listText}>Tanggal</Text>
+                  <Text style={styles.qtyText}>Listrik: $30</Text>
+                  <Text style={styles.qtyText}>Bensin: $60</Text>
                 </View>
-                <Text style={styles.hargaText}>Pendapatan</Text>
+                <Text
+                  style={{...styles.hargaText, textAlign: 'right', flex: 1}}>
+                  $500
+                </Text>
               </View>
 
-              <Text style={styles.categoryText}>Detail Laporan </Text>
+              <View
+                style={{
+                  width: '100%',
+                  backgroundColor: 'black',
+                  height: 1,
+                }}
+              />
 
-              <View style={styles.category}>
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate('LaporanBulananPimpinan')
-                  }
-                  style={styles.textContainer}>
-                  <Image
-                    source={require('../../assets/icon/grid.png')}
-                    style={styles.categoryIcon}
-                  />
-
-                  <Text style={styles.categoryText}>Laporan Bulan</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate('LaporanHarianPimpinan')
-                  }
-                  style={styles.textContainer}>
-                  <Image
-                    source={require('../../assets/icon/grid.png')}
-                    style={styles.categoryIcon}
-                  />
-
-                  <Text style={styles.categoryText}>Laporan Harian</Text>
-                </TouchableOpacity>
+              <View style={styles.listContainer}>
+                {/* <Image
+                  source={require('../../assets/icon/watch.png')}
+                  style={styles.listIcon}
+                /> */}
+                <View>
+                  <Text style={styles.listText}>Tanggal</Text>
+                  <Text style={styles.qtyText}>Listrik: $30</Text>
+                  <Text style={styles.qtyText}>Bensin: $60</Text>
+                </View>
+                <Text
+                  style={{...styles.hargaText, textAlign: 'right', flex: 1}}>
+                  $500
+                </Text>
               </View>
+
+              <View
+                style={{
+                  width: '100%',
+                  backgroundColor: 'black',
+                  height: 1,
+                }}
+              />
+
+              <View style={styles.listContainer}>
+                {/* <Image
+                  source={require('../../assets/icon/watch.png')}
+                  style={styles.listIcon}
+                /> */}
+                <View>
+                  <Text style={styles.listText}>Tanggal</Text>
+                  <Text style={styles.qtyText}>Listrik: $30</Text>
+                  <Text style={styles.qtyText}>Bensin: $60</Text>
+                </View>
+                <Text
+                  style={{...styles.hargaText, textAlign: 'right', flex: 1}}>
+                  $500
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  width: '100%',
+                  backgroundColor: 'black',
+                  height: 1,
+                }}
+              />
+
+              <View style={styles.listContainer}>
+                {/* <Image
+                  source={require('../../assets/icon/watch.png')}
+                  style={styles.listIcon}
+                /> */}
+                <View>
+                  <Text style={styles.listText}>Tanggal</Text>
+                  <Text style={styles.qtyText}>Listrik: $30</Text>
+                  <Text style={styles.qtyText}>Bensin: $60</Text>
+                </View>
+                <Text
+                  style={{...styles.hargaText, textAlign: 'right', flex: 1}}>
+                  $500
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  width: '100%',
+                  backgroundColor: 'black',
+                  height: 1,
+                }}
+              />
             </ScrollView>
-                    <TouchableOpacity
-                        onPress={()=>this.keluar()}
-                        style={styles.keluar}>
-              <Text style={{color: 'white', fontWeight: 'bold'}}>Keluar</Text>
-            </TouchableOpacity>
           </View>
           <View style={styles.bottomContainer}>
             <View>
-              <Text style={styles.bottomText}>Saldo Akhir</Text>
-              <Text style={styles.totalText}>Qty: Keseluruhan terjual</Text>
+              <Text style={styles.bottomText}>Total Item: 10,</Text>
+              <Text style={styles.totalText}>Harga: $85</Text>
             </View>
-            <Text style={styles.chckText}>Saldo Kas</Text>
+            <View
+              style={{
+                // backgroundColor: 'blue',
+                // marginRight: -50,
+                textAlign: 'right',
+                flex: 1,
+                width: 90,
+                // height: 25,
+                // borderWidth: 3,
+                // marginLeft: '30%',
+                marginTop: -15,
+                // borderRadius: 8,
+                // backgroundColor: 'blue',
+              }}>
+              <Text
+                style={{
+                  alignItems: 'center',
+                  alignContent: 'center',
+                  alignSelf: 'center',
+                  fontWeight: 'bold',
+                  color: 'blue',
+                }}>
+                $2000
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -108,13 +176,6 @@ export default class CashierDash extends Component {
 }
 
 const styles = StyleSheet.create({
-  keluar: {
-    margin: 5,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'red',
-  },
   headerBg: {
     borderTopStartRadius: 10,
     borderTopEndRadius: 10,
@@ -169,7 +230,8 @@ const styles = StyleSheet.create({
     // color: 'white',
     fontSize: 17,
     fontWeight: 'bold',
-    marginLeft: 10,
+    marginLeft: '10%',
+    marginRight: 100,
     // marginTop: 10,
     // marginHorizontal: 20,
     // marginVertical: 15,
@@ -196,13 +258,11 @@ const styles = StyleSheet.create({
     // flex: 1,
   },
   hargaText: {
-    textAlign: 'right',
-    flex: 1,
     marginTop: -9,
     // color: 'white',
     fontSize: 17,
     fontWeight: 'bold',
-    marginRight: 10,
+    marginRight: '5%',
     // alignItems: 'center',
     // alignContent: 'center',
     // alignSelf: 'stretch',
@@ -212,13 +272,11 @@ const styles = StyleSheet.create({
     // flex: 1,
   },
   chckText: {
-    textAlign: 'right',
-    flex: 1,
-    marginBottom: 15,
+    marginTop: -9,
     // color: 'white',
     fontSize: 17,
     fontWeight: 'bold',
-    marginRight: 10,
+    marginLeft: '35%',
     // alignItems: 'center',
     // alignContent: 'center',
     // alignSelf: 'stretch',
@@ -257,7 +315,7 @@ const styles = StyleSheet.create({
   viewLogin: {
     width: '95%',
     height: '90%',
-    backgroundColor: '#f0f1f5',
+    backgroundColor: '#004c90',
     elevation: 10,
     borderRadius: 10,
     // justifyContent: 'center',
@@ -277,7 +335,7 @@ const styles = StyleSheet.create({
   // },
 
   categoryContainer: {
-    width: '30%',
+    width: '35%',
     height: 50,
     // backgroundColor: '#cccccc',
     // paddingTop: '5%',
@@ -289,7 +347,7 @@ const styles = StyleSheet.create({
     // paddingBottom: 10,
   },
   textContainer: {
-    width: '44%',
+    width: '30%',
     height: 90,
     backgroundColor: '#cccccc',
     paddingTop: '5%',
@@ -302,7 +360,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     width: '94%',
-    minHeight: 60,
+    minHeight: 70,
     // height: 60,
     backgroundColor: '#bbe1fd',
     paddingTop: '5%',
@@ -318,7 +376,6 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     width: '94%',
-    minHeight: 55,
     height: 50,
     backgroundColor: '#bbe1fd',
     paddingTop: '5%',

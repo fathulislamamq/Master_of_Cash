@@ -8,25 +8,54 @@ import {
   ImageBackground,
   TouchableOpacity,
   ScrollView,
+  TextInput,
 } from 'react-native';
+// import CheckBox from '@react-native-community/checkbox';
 
-export default class CashierDash extends Component {
+export default class PembelianStaff extends Component {
+  constructor() {
+    super();
+    this.state = {
+      data:'',
+      angka: 1,
+      ket: '',
+      loading: false,
+      token: '',
+    };
+  }
+
+  barang = () => {
+    const url = `https://master-of-sale.herokuapp.com/api/kategori`;
+
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.state.token}`,
+      },
+    })
+      .then((respon) => respon.json())
+      .then((resjson) => {
+        console.log('ini barang ', resjson);
+        this.setState({data: resjson.data});
+      })
+      .catch((error) => {
+        console.log('errornya adalah: ' + error);
+        this.setState({loading: false});
+      });
+  };
+
   componentDidMount() {
     AsyncStorage.getItem('token').then((token) => {
       if (token != null) {
         this.setState({token: token});
-        // this.lihat();
+        this.barang();
       } else {
         console.log('gak ada token');
       }
     });
   }
-
-  keluar = () => {
-    AsyncStorage.clear();
-    this.props.navigation.replace('Login');
-  };
-
   render() {
     return (
       <View style={{flex: 1}}>
@@ -39,67 +68,143 @@ export default class CashierDash extends Component {
                   style={styles.headerIcon}
                 />
                 <View style={styles.categoryContainer}>
-                  <Text style={styles.categoryText}>Dashboard</Text>
+                
+                  <Text style={styles.categoryText}>Pembelian</Text>
                 </View>
-
                 <Image
                   source={require('../../assets/icon/round-account-button-with-user-inside.png')}
                   style={styles.headerIconRight}
                 />
               </View>
-
-              <Text style={styles.categoryText}>Laporan Hari ini</Text>
+              
               <View style={styles.listContainer}>
+                <TouchableOpacity
+                  style={{
+                    
+                    marginLeft: 10,
+                    marginBottom: 15,
+                    width: 80,
+                    height: 80,
+                    borderWidth: 3,
+                  
+                    alignSelf: 'center',
+                  }}
+                />
+                
                 <View>
-                  <Text style={styles.listText}>Hari</Text>
-
-                  <Text style={styles.qtyText}>Qty: Terjual</Text>
+                  <Text style={styles.barangText}>Teh Picik</Text>
+                  <Text style={styles.qtyText}>Qty: 98</Text>
+                  <Text style={styles.perusahaanText}>
+                    Perusahaan: Sinar Jaya Group
+                  </Text>
                 </View>
-                <Text style={styles.hargaText}>Pendapatan</Text>
+                <Text style={styles.listText}>$500</Text>
               </View>
 
-              <Text style={styles.categoryText}>Detail Laporan </Text>
+              <View
+                style={{
+                  width: '100%',
+                  backgroundColor: 'black',
+                  height: 1,
+                }}
+              />
 
-              <View style={styles.category}>
+              <View style={styles.listContainer}>
                 <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate('LaporanBulananPimpinan')
-                  }
-                  style={styles.textContainer}>
-                  <Image
-                    source={require('../../assets/icon/grid.png')}
-                    style={styles.categoryIcon}
-                  />
-
-                  <Text style={styles.categoryText}>Laporan Bulan</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate('LaporanHarianPimpinan')
-                  }
-                  style={styles.textContainer}>
-                  <Image
-                    source={require('../../assets/icon/grid.png')}
-                    style={styles.categoryIcon}
-                  />
-
-                  <Text style={styles.categoryText}>Laporan Harian</Text>
-                </TouchableOpacity>
+                  style={{
+                    
+                    marginLeft: 10,
+                    marginBottom: 15,
+                    width: 80,
+                    height: 80,
+                    borderWidth: 3,
+                    
+                    alignSelf: 'center',
+                  }}
+                />
+                
+                <View>
+                  <Text style={styles.barangText}>Teh Picik</Text>
+                  <Text style={styles.qtyText}>Qty: 98</Text>
+                  <Text style={styles.perusahaanText}>
+                    Perusahaan: Sinar Jaya Group
+                  </Text>
+                </View>
+                <Text style={styles.listText}>$500</Text>
               </View>
+
+              <View
+                style={{
+                  width: '100%',
+                  backgroundColor: 'black',
+                  height: 1,
+                }}
+              />
+
+              <View style={styles.listContainer}>
+                <TouchableOpacity
+                  style={{
+                    
+                    marginLeft: 10,
+                    marginBottom: 15,
+                    width: 80,
+                    height: 80,
+                    borderWidth: 3,
+                   
+                    alignSelf: 'center',
+                  }}
+                />
+               
+                <View>
+                  <Text style={styles.barangText}>Teh Picik</Text>
+                  <Text style={styles.qtyText}>Qty: 98</Text>
+                  <Text style={styles.perusahaanText}>
+                    Perusahaan: Sinar Jaya Group
+                  </Text>
+                </View>
+                <Text style={styles.listText}>$500</Text>
+              </View>
+
+              <View
+                style={{
+                  width: '100%',
+                  backgroundColor: 'black',
+                  height: 1,
+                }}
+              />
+
+              <View style={styles.listContainer}>
+                <TouchableOpacity
+                  style={{
+                  
+                    marginLeft: 10,
+                    marginBottom: 15,
+                    width: 80,
+                    height: 80,
+                    borderWidth: 3,
+                    
+                    alignSelf: 'center',
+                  }}
+                />
+               
+                <View>
+                  <Text style={styles.barangText}>Teh Picik</Text>
+                  <Text style={styles.qtyText}>Qty: 98</Text>
+                  <Text style={styles.perusahaanText}>
+                    Perusahaan: Sinar Jaya Group
+                  </Text>
+                </View>
+                <Text style={styles.listText}>$500</Text>
+              </View>
+
+              <View
+                style={{
+                  width: '100%',
+                  backgroundColor: 'black',
+                  height: 1,
+                }}
+              />
             </ScrollView>
-                    <TouchableOpacity
-                        onPress={()=>this.keluar()}
-                        style={styles.keluar}>
-              <Text style={{color: 'white', fontWeight: 'bold'}}>Keluar</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.bottomContainer}>
-            <View>
-              <Text style={styles.bottomText}>Saldo Akhir</Text>
-              <Text style={styles.totalText}>Qty: Keseluruhan terjual</Text>
-            </View>
-            <Text style={styles.chckText}>Saldo Kas</Text>
           </View>
         </View>
       </View>
@@ -108,13 +213,6 @@ export default class CashierDash extends Component {
 }
 
 const styles = StyleSheet.create({
-  keluar: {
-    margin: 5,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'red',
-  },
   headerBg: {
     borderTopStartRadius: 10,
     borderTopEndRadius: 10,
@@ -155,6 +253,22 @@ const styles = StyleSheet.create({
   },
   listText: {
     marginTop: -9,
+    marginRight: 10,
+    textAlign: 'right',
+    flex: 1,
+    // marginLeft: 10,
+    width: 90,
+    // color: 'white',
+    fontSize: 17,
+    fontWeight: 'bold',
+    // marginLeft: '10%',
+    // marginTop: 10,
+    // marginHorizontal: 20,
+    // marginVertical: 15,
+    // flex: 1,
+  },
+  barangText: {
+    marginTop: -9,
     // color: 'white',
     fontSize: 17,
     fontWeight: 'bold',
@@ -169,13 +283,24 @@ const styles = StyleSheet.create({
     // color: 'white',
     fontSize: 17,
     fontWeight: 'bold',
-    marginLeft: 10,
+    marginLeft: '10%',
     // marginTop: 10,
     // marginHorizontal: 20,
     // marginVertical: 15,
     // flex: 1,
   },
   qtyText: {
+    // color: 'white',
+    fontSize: 13,
+    // fontWeight: 'bold',
+    marginLeft: '10%',
+    // marginBottom: 15,
+    // marginHorizontal: 20,
+    // marginVertical: 15,
+    // flex: 1,
+  },
+  perusahaanText: {
+    width: 100,
     // color: 'white',
     fontSize: 13,
     // fontWeight: 'bold',
@@ -196,13 +321,11 @@ const styles = StyleSheet.create({
     // flex: 1,
   },
   hargaText: {
-    textAlign: 'right',
-    flex: 1,
     marginTop: -9,
     // color: 'white',
     fontSize: 17,
     fontWeight: 'bold',
-    marginRight: 10,
+    marginLeft: '20%',
     // alignItems: 'center',
     // alignContent: 'center',
     // alignSelf: 'stretch',
@@ -212,13 +335,11 @@ const styles = StyleSheet.create({
     // flex: 1,
   },
   chckText: {
-    textAlign: 'right',
-    flex: 1,
-    marginBottom: 15,
+    marginTop: -9,
     // color: 'white',
     fontSize: 17,
     fontWeight: 'bold',
-    marginRight: 10,
+    marginLeft: '35%',
     // alignItems: 'center',
     // alignContent: 'center',
     // alignSelf: 'stretch',
@@ -237,17 +358,6 @@ const styles = StyleSheet.create({
     // marginVertical: 15,
     // flex: 1,
   },
-  // header: {
-  //   backgroundColor: '#4c9b8d',
-  //   alignItems: 'center',
-  // },
-  // headerBg1: {
-  //   paddingHorizontal: 15,
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   height: 50,
-  //   resizeMode: 'center',
-  // },
   headerView: {
     // color: 'white',
     fontSize: 20,
@@ -265,17 +375,6 @@ const styles = StyleSheet.create({
     // paddingTop: '20%',
     // flex: 1,
   },
-  // viewLogin1: {
-  //   width: '95%',
-  //   backgroundColor: '#cccccc',
-  //   elevation: 10,
-  //   borderRadius: 10,
-  //   // justifyContent: 'center',
-  //   // alignItems: 'center',
-  //   paddingTop: '5%',
-  //   flex: 2,
-  // },
-
   categoryContainer: {
     width: '30%',
     height: 50,
@@ -289,7 +388,7 @@ const styles = StyleSheet.create({
     // paddingBottom: 10,
   },
   textContainer: {
-    width: '44%',
+    width: '30%',
     height: 90,
     backgroundColor: '#cccccc',
     paddingTop: '5%',
@@ -302,8 +401,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     width: '94%',
-    minHeight: 60,
-    // height: 60,
+    height: 100,
     backgroundColor: '#bbe1fd',
     paddingTop: '5%',
     // margin: 10,
@@ -318,7 +416,6 @@ const styles = StyleSheet.create({
   },
   bottomContainer: {
     width: '94%',
-    minHeight: 55,
     height: 50,
     backgroundColor: '#bbe1fd',
     paddingTop: '5%',

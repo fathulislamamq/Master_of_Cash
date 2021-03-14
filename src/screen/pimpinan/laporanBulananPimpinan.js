@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {Component} from 'react';
 import {
   Text,
@@ -10,23 +9,7 @@ import {
   ScrollView,
 } from 'react-native';
 
-export default class CashierDash extends Component {
-  componentDidMount() {
-    AsyncStorage.getItem('token').then((token) => {
-      if (token != null) {
-        this.setState({token: token});
-        // this.lihat();
-      } else {
-        console.log('gak ada token');
-      }
-    });
-  }
-
-  keluar = () => {
-    AsyncStorage.clear();
-    this.props.navigation.replace('Login');
-  };
-
+export default class LaporanBulananPimpinan extends Component {
   render() {
     return (
       <View style={{flex: 1}}>
@@ -39,67 +22,71 @@ export default class CashierDash extends Component {
                   style={styles.headerIcon}
                 />
                 <View style={styles.categoryContainer}>
-                  <Text style={styles.categoryText}>Dashboard</Text>
+                  {/* <Image
+                  source={require('../../../assets/icon/snacks.png')}
+                  style={styles.categoryIcon}
+                /> */}
+                  <Text style={styles.categoryText}>Bulan</Text>
                 </View>
-
                 <Image
                   source={require('../../assets/icon/round-account-button-with-user-inside.png')}
                   style={styles.headerIconRight}
                 />
               </View>
-
-              <Text style={styles.categoryText}>Laporan Hari ini</Text>
+              {/* <View style={styles.headerDash}>
+              <Image
+                source={require('../../../assets/icon/city-buildings-silhouette.png')}
+                style={styles.dashIcon}
+              />
+              <Text style={styles.headerText}>Dashboard</Text>
+            </View> */}
+              <Text style={styles.categoryText}>Laporan Bulan</Text>
               <View style={styles.listContainer}>
                 <View>
                   <Text style={styles.listText}>Hari</Text>
-
                   <Text style={styles.qtyText}>Qty: Terjual</Text>
                 </View>
                 <Text style={styles.hargaText}>Pendapatan</Text>
               </View>
-
-              <Text style={styles.categoryText}>Detail Laporan </Text>
-
-              <View style={styles.category}>
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate('LaporanBulananPimpinan')
-                  }
-                  style={styles.textContainer}>
+              {/* <Text style={styles.categoryText}>Laporan Bulanan</Text> */}
+              {/* <View style={styles.category}>
+                <TouchableOpacity style={styles.textContainer}>
                   <Image
                     source={require('../../assets/icon/grid.png')}
                     style={styles.categoryIcon}
                   />
-
-                  <Text style={styles.categoryText}>Laporan Bulan</Text>
+                  <Text style={styles.categoryText}>Bulan</Text>
                 </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() =>
-                    this.props.navigation.navigate('LaporanHarianPimpinan')
-                  }
-                  style={styles.textContainer}>
+                <TouchableOpacity style={styles.textContainer}>
                   <Image
                     source={require('../../assets/icon/grid.png')}
                     style={styles.categoryIcon}
                   />
-
-                  <Text style={styles.categoryText}>Laporan Harian</Text>
+                  <Text style={styles.categoryText}>Bulan</Text>
                 </TouchableOpacity>
-              </View>
+                <TouchableOpacity style={styles.textContainer}>
+                  <Image
+                    source={require('../../assets/icon/grid.png')}
+                    style={styles.categoryIcon}
+                  />
+                  <Text style={styles.categoryText}>Bulan</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.textContainer}>
+                  <Image
+                    source={require('../../assets/icon/grid.png')}
+                    style={styles.categoryIcon}
+                  />
+                  <Text style={styles.categoryText}>Bulan</Text>
+                </TouchableOpacity>
+              </View> */}
             </ScrollView>
-                    <TouchableOpacity
-                        onPress={()=>this.keluar()}
-                        style={styles.keluar}>
-              <Text style={{color: 'white', fontWeight: 'bold'}}>Keluar</Text>
-            </TouchableOpacity>
           </View>
           <View style={styles.bottomContainer}>
             <View>
-              <Text style={styles.bottomText}>Saldo Akhir</Text>
-              <Text style={styles.totalText}>Qty: Keseluruhan terjual</Text>
+              <Text style={styles.bottomText}>Pengeluaran</Text>
+              <Text style={styles.totalText}>Qty: Stok barang</Text>
             </View>
-            <Text style={styles.chckText}>Saldo Kas</Text>
+            <Text style={styles.chckText}>Pemasukan </Text>
           </View>
         </View>
       </View>
@@ -108,13 +95,6 @@ export default class CashierDash extends Component {
 }
 
 const styles = StyleSheet.create({
-  keluar: {
-    margin: 5,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'red',
-  },
   headerBg: {
     borderTopStartRadius: 10,
     borderTopEndRadius: 10,

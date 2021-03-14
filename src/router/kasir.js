@@ -66,18 +66,12 @@ export default class KategoryBarangKasir extends Component {
   };
 
   tambah = (id) => {
-    const id2= this.state.data.id
+    const id2 = this.state.data.id;
     if (id === id) {
       this.setState({total: this.state.total + 1});
     }
   };
   kurang = () => {
-    // {
-    //   this.state.data2.map((v, k) => {
-    //     return (
-
-    //   )
-    // })}
     this.setState({total: this.state.total - 1});
   };
   componentDidMount() {
