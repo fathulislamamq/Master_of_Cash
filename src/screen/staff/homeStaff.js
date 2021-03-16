@@ -89,7 +89,6 @@ export default class HomeStaff extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => this.props.navigation.navigate('CategoryStaff')}
-                
                 style={styles.textContainer}>
                 <Image
                   source={require('../../assets/icon/grid.png')}
@@ -98,13 +97,14 @@ export default class HomeStaff extends Component {
                 <Text style={styles.categoryText}>Kategori</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('PengeluaranStaff')}
-              
-              style={styles.textContainer}>
+                onPress={() =>
+                  this.props.navigation.navigate('PengeluaranStaff')
+                }
+                style={styles.textContainer}>
                 <Image
                   source={require('../../assets/icon/electronics.png')}
                   style={styles.categoryIcon}
-                  />
+                />
                 <Text style={styles.categoryText}>Pengeluaran</Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -141,79 +141,20 @@ export default class HomeStaff extends Component {
               );
             })}
 
-            <View style={styles.listContainer}>
-              <Text style={styles.listText}>Nama</Text>
+            <TouchableOpacity style={styles.listContainer}>
 
-              <View style={{flexDirection: 'row'}}>
-                <View style={{width: '25%'}}>
-                  <Text style={{fontWeight: 'bold'}}>telepon</Text>
-
-                  <Text style={{fontWeight: 'bold'}}>alamat</Text>
-                </View>
-
-                <View style={{width: '75%'}}>
-                  <Text> : telepon</Text>
-
-                  <Text> : alamat </Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.listContainer}>
-              <Text style={styles.listText}>Nama</Text>
-
-              <View style={{flexDirection: 'row'}}>
-                <View style={{width: '25%'}}>
-                  <Text style={{fontWeight: 'bold'}}>telepon</Text>
-
-                  <Text style={{fontWeight: 'bold'}}>alamat</Text>
-                </View>
-
-                <View style={{width: '75%'}}>
-                  <Text> : telepon</Text>
-
-                  <Text> : alamat </Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.listContainer}>
-              <Text style={styles.listText}>Nama</Text>
-
-              <View style={{flexDirection: 'row'}}>
-                <View style={{width: '25%'}}>
-                  <Text style={{fontWeight: 'bold'}}>telepon</Text>
-
-                  <Text style={{fontWeight: 'bold'}}>alamat</Text>
-                </View>
-
-                <View style={{width: '75%'}}>
-                  <Text> : telepon</Text>
-
-                  <Text> : alamat </Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.listContainer}>
-              <Text style={styles.listText}>Nama</Text>
-
-              <View style={{flexDirection: 'row'}}>
-                <View style={{width: '25%'}}>
-                  <Text style={{fontWeight: 'bold'}}>telepon</Text>
-
-                  <Text style={{fontWeight: 'bold'}}>alamat</Text>
-                </View>
-
-                <View style={{width: '75%'}}>
-                  <Text> : telepon</Text>
-
-                  <Text> : alamat </Text>
-                </View>
-              </View>
-            </View>
+              <Icon name='add' size={30} style={{alignSelf:'center'}} />
+              <Text style={{fontWeight:'bold',alignSelf:'center'}}>Tambah Supplier</Text>
+            </TouchableOpacity>
           </ScrollView>
+
+          <TouchableOpacity onPress={() => this.keluar()} style={styles.keluar}>
+            <Text style={{color: 'white', fontWeight: 'bold'}}>Keluar</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity style={{position:'absolute'}}>
-          <View style={{height:50,width:50,backgroundColor:'blue'}}>
-            <Icon name='add' size={30} />
+        <TouchableOpacity style={{position: 'absolute'}}>
+          <View style={{height: 50, width: 50, backgroundColor: 'blue'}}>
+            <Icon name="add" size={30} />
           </View>
         </TouchableOpacity>
         <View style={styles.bottomContainer}>
@@ -229,6 +170,13 @@ export default class HomeStaff extends Component {
 }
 
 const styles = StyleSheet.create({
+  keluar: {
+    margin: 5,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'red',
+  },
   headerBg: {
     borderTopStartRadius: 10,
     borderTopEndRadius: 10,

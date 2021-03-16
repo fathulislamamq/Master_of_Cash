@@ -10,22 +10,21 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 // import CheckBox from '@react-native-community/checkbox';
 
 export default class PembelianStaff extends Component {
   constructor() {
     super();
     this.state = {
-      data:'',
-      angka: 1,
-      ket: '',
+      data: [],
       loading: false,
       token: '',
     };
   }
 
   barang = () => {
-    const url = `https://master-of-sale.herokuapp.com/api/kategori`;
+    const url = `https://master-of-sale.herokuapp.com/api/pembelian`;
 
     fetch(url, {
       method: 'GET',
@@ -37,7 +36,7 @@ export default class PembelianStaff extends Component {
     })
       .then((respon) => respon.json())
       .then((resjson) => {
-        console.log('ini barang ', resjson);
+        console.log('ini barang ', resjson.data);
         this.setState({data: resjson.data});
       })
       .catch((error) => {
@@ -68,7 +67,6 @@ export default class PembelianStaff extends Component {
                   style={styles.headerIcon}
                 />
                 <View style={styles.categoryContainer}>
-                
                   <Text style={styles.categoryText}>Pembelian</Text>
                 </View>
                 <Image
@@ -76,136 +74,47 @@ export default class PembelianStaff extends Component {
                   style={styles.headerIconRight}
                 />
               </View>
-              
-              <View style={styles.listContainer}>
-                <TouchableOpacity
-                  style={{
-                    
-                    marginLeft: 10,
-                    marginBottom: 15,
-                    width: 80,
-                    height: 80,
-                    borderWidth: 3,
-                  
-                    alignSelf: 'center',
-                  }}
-                />
-                
-                <View>
-                  <Text style={styles.barangText}>Teh Picik</Text>
-                  <Text style={styles.qtyText}>Qty: 98</Text>
-                  <Text style={styles.perusahaanText}>
-                    Perusahaan: Sinar Jaya Group
-                  </Text>
-                </View>
-                <Text style={styles.listText}>$500</Text>
-              </View>
+              {this.state.data.map((v, k) => {
+                return (
+                  <View key={k} style={styles.listContainer}>
+                    <TouchableOpacity
+                      style={{
+                        marginLeft: 10,
+                        marginBottom: 15,
+                        width: 80,
+                        height: 80,
+                        borderWidth: 3,
 
-              <View
-                style={{
-                  width: '100%',
-                  backgroundColor: 'black',
-                  height: 1,
-                }}
-              />
+                        alignSelf: 'center',
+                      }}
+                    />
 
-              <View style={styles.listContainer}>
-                <TouchableOpacity
-                  style={{
-                    
-                    marginLeft: 10,
-                    marginBottom: 15,
-                    width: 80,
-                    height: 80,
-                    borderWidth: 3,
-                    
-                    alignSelf: 'center',
-                  }}
-                />
-                
-                <View>
-                  <Text style={styles.barangText}>Teh Picik</Text>
-                  <Text style={styles.qtyText}>Qty: 98</Text>
-                  <Text style={styles.perusahaanText}>
-                    Perusahaan: Sinar Jaya Group
-                  </Text>
-                </View>
-                <Text style={styles.listText}>$500</Text>
-              </View>
+                    <View>
+                      <Text style={styles.barangText}>{v.barang.nama}</Text>
 
-              <View
-                style={{
-                  width: '100%',
-                  backgroundColor: 'black',
-                  height: 1,
-                }}
-              />
+                      <Text style={styles.qtyText}>Qty: {v.jumlah}</Text>
 
-              <View style={styles.listContainer}>
-                <TouchableOpacity
-                  style={{
-                    
-                    marginLeft: 10,
-                    marginBottom: 15,
-                    width: 80,
-                    height: 80,
-                    borderWidth: 3,
-                   
-                    alignSelf: 'center',
-                  }}
-                />
-               
-                <View>
-                  <Text style={styles.barangText}>Teh Picik</Text>
-                  <Text style={styles.qtyText}>Qty: 98</Text>
-                  <Text style={styles.perusahaanText}>
-                    Perusahaan: Sinar Jaya Group
-                  </Text>
-                </View>
-                <Text style={styles.listText}>$500</Text>
-              </View>
-
-              <View
-                style={{
-                  width: '100%',
-                  backgroundColor: 'black',
-                  height: 1,
-                }}
-              />
-
-              <View style={styles.listContainer}>
-                <TouchableOpacity
-                  style={{
-                  
-                    marginLeft: 10,
-                    marginBottom: 15,
-                    width: 80,
-                    height: 80,
-                    borderWidth: 3,
-                    
-                    alignSelf: 'center',
-                  }}
-                />
-               
-                <View>
-                  <Text style={styles.barangText}>Teh Picik</Text>
-                  <Text style={styles.qtyText}>Qty: 98</Text>
-                  <Text style={styles.perusahaanText}>
-                    Perusahaan: Sinar Jaya Group
-                  </Text>
-                </View>
-                <Text style={styles.listText}>$500</Text>
-              </View>
-
-              <View
-                style={{
-                  width: '100%',
-                  backgroundColor: 'black',
-                  height: 1,
-                }}
-              />
+                      <Text style={styles.perusahaanText}>
+                        Perusahaan: {v.supplier.nama}
+                      </Text>
+                    </View>
+                    <Text style={styles.listText}>Rp. {v.total_biaya},00</Text>
+                  </View>
+                );
+              })}
             </ScrollView>
           </View>
+          <TouchableOpacity
+            onPress={()=>this.props.navigation.navigate('BeliStaff')}
+            style={styles.rmb}>
+              <View style={styles.vpm}>
+                <Icon name="add" size={30} />
+              </View>
+
+              <Text style={{ fontWeight: 'bold' }}>Add List</Text>
+              <Text style={{fontWeight: 'bold'}}>Pembelian</Text>
+              
+            </TouchableOpacity>
         </View>
       </View>
     );
@@ -213,6 +122,22 @@ export default class PembelianStaff extends Component {
 }
 
 const styles = StyleSheet.create({
+  rmb: {
+    position: 'absolute',
+    right: 10,
+    bottom: 10,
+    alignItems: 'center',
+  },
+  vpm: {
+    height: 40,
+    width: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#bbe1fd',
+    elevation: 5,
+    marginBottom: 5,
+  },
   headerBg: {
     borderTopStartRadius: 10,
     borderTopEndRadius: 10,
@@ -255,9 +180,9 @@ const styles = StyleSheet.create({
     marginTop: -9,
     marginRight: 10,
     textAlign: 'right',
-    flex: 1,
-    // marginLeft: 10,
-    width: 90,
+    position: 'absolute',
+    right: 5,
+    bottom: 5,
     // color: 'white',
     fontSize: 17,
     fontWeight: 'bold',

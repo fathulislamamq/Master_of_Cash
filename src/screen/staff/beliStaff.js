@@ -5,24 +5,34 @@ import {
   StyleSheet,
   View,
   Image,
-  ImageBackground,
   TouchableOpacity,
   ScrollView,
+  TextInput,
+  ActivityIndicator,
+  Alert
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {Picker} from '@react-native-picker/picker';
 // import CheckBox from '@react-native-community/checkbox';
 
-export default class PengeluaranStaff extends Component {
+export default class BelianStaff extends Component {
   constructor() {
     super();
     this.state = {
+      supply: [],
       data: [],
       loading: false,
       token: '',
+      barang_id: 0,
+      supplier_id: 0,
+      jumlah: 0,
+      total_biaya: 0,
+      belanja: [],
     };
   }
 
-  barang = () => {
-    const url = `https://master-of-sale.herokuapp.com/api/pengeluaran`;
+  supply = () => {
+    const url = `https://master-of-sale.herokuapp.com/api/supplier`;
 
     fetch(url, {
       method: 'GET',
@@ -34,8 +44,79 @@ export default class PengeluaranStaff extends Component {
     })
       .then((respon) => respon.json())
       .then((resjson) => {
-        console.log('ini pengeluarannya ', resjson.data);
+        console.log('ini suppliernya', resjson.data);
+        this.setState({supply: resjson.data});
+      })
+      .catch((error) => {
+        console.log('errornya adalah: ' + error);
+        this.setState({loading: false});
+      });
+  };
+
+  barang = () => {
+    const url = `https://master-of-sale.herokuapp.com/api/barang`;
+
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.state.token}`,
+      },
+    })
+      .then((respon) => respon.json())
+      .then((resjson) => {
+        console.log('ini barang ', resjson.data);
         this.setState({data: resjson.data});
+      })
+      .catch((error) => {
+        console.log('errornya adalah: ' + error);
+        alert('errornya adalah: ' + error);
+        this.setState({loading: false});
+      });
+  };
+
+  beli = () => {
+    const {supplier_id, barang_id, jumlah, total_biaya} = this.state;
+
+    this.setState({loading: true});
+
+    const url = `https://master-of-sale.herokuapp.com/api/pembelian`;
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.state.token}`,
+      },
+      body: JSON.stringify({
+        supplier_id: supplier_id,
+        barang_id: barang_id,
+        jumlah: jumlah,
+        total_biaya: total_biaya,
+      }),
+    })
+      .then((respon) => respon.json())
+      .then((resjson) => {
+        console.log('ini belanjanya ', resjson.data);
+        this.setState({belanja: resjson.data, loading: false});
+
+        Alert.alert(
+          'Berhasil',
+          `Supplier: ${this.state.belanja.supplier.nama}` +
+            `\nBarang: ${this.state.belanja.barang.nama}` +
+            `\nJumlah: ${this.state.belanja.jumlah}` +
+            `\nTotal Biaya: ${this.state.belanja.total_biaya}`,
+          [
+            {
+              text: 'OK',
+              onPress: () => console.log('OK Pressed'),
+              style: 'cancel',
+            },
+          ],
+        );
+        this.props.navigation.navigate('PembelianStaff');
       })
       .catch((error) => {
         console.log('errornya adalah: ' + error);
@@ -48,11 +129,20 @@ export default class PengeluaranStaff extends Component {
       if (token != null) {
         this.setState({token: token});
         this.barang();
+        this.supply();
       } else {
         console.log('gak ada token');
       }
     });
   }
+
+  kurang = () => {
+    this.setState({jumlah: this.state.jumlah - 1});
+  };
+
+  tambah = () => {
+    this.setState({jumlah: this.state.jumlah + 1});
+  };
 
   render() {
     return (
@@ -66,159 +156,85 @@ export default class PengeluaranStaff extends Component {
                   style={styles.headerIcon}
                 />
                 <View style={styles.categoryContainer}>
-                  {/* <Image
-                  source={require('../../assets/icon/snacks.png')}
-                  style={styles.categoryIcon}
-                /> */}
-                  <Text style={styles.categoryText}>Pengeluaran</Text>
+                  <Text style={styles.categoryText}>Pembelian</Text>
                 </View>
                 <Image
                   source={require('../../assets/icon/round-account-button-with-user-inside.png')}
                   style={styles.headerIconRight}
                 />
               </View>
-              
-              {this.state.data ? (
-                
-                <View style={styles.listContainer}>
-  
-                <View>
-                  <Text style={styles.listText}>{this.state.data.created_at}</Text>
-                  <Text style={styles.qtyText}>Listrik: $30</Text>
-                  <Text style={styles.qtyText}>Bensin: $60</Text>
-                </View>
-                <Text
-                  style={{...styles.hargaText, textAlign: 'right', flex: 1}}>
-                  $500
-                </Text>
+
+              <Text style={styles.categoryText}>Supplier</Text>
+
+              <Picker
+                mode="dropdown"
+                selectedValue={this.state.supplier_id}
+                onValueChange={(id) => this.setState({supplier_id: id})}>
+                {this.state.supply.map((v, i) => (
+                  <Picker.Item key={i} label={v.nama} value={v.id} />
+                ))}
+              </Picker>
+
+              <Text style={styles.categoryText}>Barang</Text>
+
+              <Picker
+                mode="dropdown"
+                selectedValue={this.state.barang_id}
+                onValueChange={(id) => this.setState({barang_id: id})}>
+                {this.state.data.map((v, i) => (
+                  <Picker.Item key={i} label={v.nama} value={v.id} />
+                ))}
+              </Picker>
+
+              <Text style={styles.categoryText}>Jumlah </Text>
+
+              <View style={{flexDirection: 'row', margin: 10}}>
+                <TextInput
+                  value={this.state.jumlah.toString()}
+                  style={styles.hasJum}
+                  onChangeText={(t) => this.setState({jumlah: t})}
+                />
+
+                <TouchableOpacity
+                  onPress={() => this.kurang()}
+                  style={styles.jumlah}>
+                  <Icon name="remove" size={20} />
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  onPress={() => this.tambah()}
+                  style={styles.jumlah}>
+                  <Icon name="add" size={20} />
+                </TouchableOpacity>
               </View>
-              ): (
-                
-                <View style={styles.listContainer}>
-  
-                  <View>
-                    <Text style={styles.listText}>Tanggal</Text>
-                    <Text style={styles.qtyText}>Listrik: $30</Text>
-                    <Text style={styles.qtyText}>Bensin: $60</Text>
-                  </View>
-                  <Text
-                    style={{...styles.hargaText, textAlign: 'right', flex: 1}}>
-                    $500
-                  </Text>
-                </View>
-              )}
+
+              <Text style={styles.categoryText}>Total Harga </Text>
 
               <View
                 style={{
-                  width: '100%',
-                  backgroundColor: 'black',
-                  height: 1,
-                }}
-              />
-
-              <View style={styles.listContainer}>
-                {/* <Image
-                  source={require('../../assets/icon/watch.png')}
-                  style={styles.listIcon}
-                /> */}
-                <View>
-                  <Text style={styles.listText}>Tanggal</Text>
-                  <Text style={styles.qtyText}>Listrik: $30</Text>
-                  <Text style={styles.qtyText}>Bensin: $60</Text>
-                </View>
-                <Text
-                  style={{...styles.hargaText, textAlign: 'right', flex: 1}}>
-                  $500
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  width: '100%',
-                  backgroundColor: 'black',
-                  height: 1,
-                }}
-              />
-
-              <View style={styles.listContainer}>
-                {/* <Image
-                  source={require('../../assets/icon/watch.png')}
-                  style={styles.listIcon}
-                /> */}
-                <View>
-                  <Text style={styles.listText}>Tanggal</Text>
-                  <Text style={styles.qtyText}>Listrik: $30</Text>
-                  <Text style={styles.qtyText}>Bensin: $60</Text>
-                </View>
-                <Text
-                  style={{...styles.hargaText, textAlign: 'right', flex: 1}}>
-                  $500
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  width: '100%',
-                  backgroundColor: 'black',
-                  height: 1,
-                }}
-              />
-
-              <View style={styles.listContainer}>
-                {/* <Image
-                  source={require('../../assets/icon/watch.png')}
-                  style={styles.listIcon}
-                /> */}
-                <View>
-                  <Text style={styles.listText}>Tanggal</Text>
-                  <Text style={styles.qtyText}>Listrik: $30</Text>
-                  <Text style={styles.qtyText}>Bensin: $60</Text>
-                </View>
-                <Text
-                  style={{...styles.hargaText, textAlign: 'right', flex: 1}}>
-                  $500
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  width: '100%',
-                  backgroundColor: 'black',
-                  height: 1,
-                }}
-              />
-            </ScrollView>
-          </View>
-          <View style={styles.bottomContainer}>
-            <View>
-              <Text style={styles.bottomText}>Total Item: 10,</Text>
-              <Text style={styles.totalText}>Harga: $85</Text>
-            </View>
-            <View
-              style={{
-                // backgroundColor: 'blue',
-                // marginRight: -50,
-                textAlign: 'right',
-                flex: 1,
-                width: 90,
-                // height: 25,
-                // borderWidth: 3,
-                // marginLeft: '30%',
-                marginTop: -15,
-                // borderRadius: 8,
-                // backgroundColor: 'blue',
-              }}>
-              <Text
-                style={{
+                  flexDirection: 'row',
                   alignItems: 'center',
-                  alignContent: 'center',
-                  alignSelf: 'center',
-                  fontWeight: 'bold',
-                  color: 'blue',
+                  padding: 5,
+                  height: 50,
+                  borderWidth: 0.5,
+                  margin: 10,
                 }}>
-                $2000
-              </Text>
-            </View>
+                <Text style={{width: '10%'}}>Rp. </Text>
+                <TextInput
+                  value={this.state.total_biaya.toString()}
+                  onChangeText={(t) => this.setState({total_biaya: t})}
+                  style={{width: '90%'}}
+                />
+              </View>
+            </ScrollView>
+
+            <TouchableOpacity onPress={() => this.beli()} style={styles.ok}>
+              {this.state.loading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text style={{fontWeight: 'bold', color: 'white'}}>Simpan</Text>
+              )}
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -227,6 +243,45 @@ export default class PengeluaranStaff extends Component {
 }
 
 const styles = StyleSheet.create({
+  rmb: {
+    position: 'absolute',
+    right: 10,
+    bottom: 10,
+    alignItems: 'center',
+  },
+
+  ok: {
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#158ac5',
+    margin: 10,
+    borderRadius: 10,
+  },
+  jumlah: {
+    width: '15%',
+    borderWidth: 0.5,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  hasJum: {
+    width: '70%',
+    borderWidth: 0.5,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  vpm: {
+    height: 40,
+    width: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#bbe1fd',
+    elevation: 5,
+    marginBottom: 5,
+  },
   headerBg: {
     borderTopStartRadius: 10,
     borderTopEndRadius: 10,
@@ -267,6 +322,22 @@ const styles = StyleSheet.create({
   },
   listText: {
     marginTop: -9,
+    marginRight: 10,
+    textAlign: 'right',
+    position: 'absolute',
+    right: 5,
+    bottom: 5,
+    // color: 'white',
+    fontSize: 17,
+    fontWeight: 'bold',
+    // marginLeft: '10%',
+    // marginTop: 10,
+    // marginHorizontal: 20,
+    // marginVertical: 15,
+    // flex: 1,
+  },
+  barangText: {
+    marginTop: -9,
     // color: 'white',
     fontSize: 17,
     fontWeight: 'bold',
@@ -282,13 +353,23 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold',
     marginLeft: '10%',
-    marginRight: 100,
     // marginTop: 10,
     // marginHorizontal: 20,
     // marginVertical: 15,
     // flex: 1,
   },
   qtyText: {
+    // color: 'white',
+    fontSize: 13,
+    // fontWeight: 'bold',
+    marginLeft: '10%',
+    // marginBottom: 15,
+    // marginHorizontal: 20,
+    // marginVertical: 15,
+    // flex: 1,
+  },
+  perusahaanText: {
+    width: 100,
     // color: 'white',
     fontSize: 13,
     // fontWeight: 'bold',
@@ -313,7 +394,7 @@ const styles = StyleSheet.create({
     // color: 'white',
     fontSize: 17,
     fontWeight: 'bold',
-    marginRight: '5%',
+    marginLeft: '20%',
     // alignItems: 'center',
     // alignContent: 'center',
     // alignSelf: 'stretch',
@@ -346,17 +427,6 @@ const styles = StyleSheet.create({
     // marginVertical: 15,
     // flex: 1,
   },
-  // header: {
-  //   backgroundColor: '#4c9b8d',
-  //   alignItems: 'center',
-  // },
-  // headerBg1: {
-  //   paddingHorizontal: 15,
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   height: 50,
-  //   resizeMode: 'center',
-  // },
   headerView: {
     // color: 'white',
     fontSize: 20,
@@ -366,7 +436,7 @@ const styles = StyleSheet.create({
   viewLogin: {
     width: '95%',
     height: '90%',
-    backgroundColor: '#004c90',
+    backgroundColor: '#f0f1f5',
     elevation: 10,
     borderRadius: 10,
     // justifyContent: 'center',
@@ -374,19 +444,8 @@ const styles = StyleSheet.create({
     // paddingTop: '20%',
     // flex: 1,
   },
-  // viewLogin1: {
-  //   width: '95%',
-  //   backgroundColor: '#cccccc',
-  //   elevation: 10,
-  //   borderRadius: 10,
-  //   // justifyContent: 'center',
-  //   // alignItems: 'center',
-  //   paddingTop: '5%',
-  //   flex: 2,
-  // },
-
   categoryContainer: {
-    width: '35%',
+    width: '30%',
     height: 50,
     // backgroundColor: '#cccccc',
     // paddingTop: '5%',
@@ -411,8 +470,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     width: '94%',
-    minHeight: 70,
-    // height: 60,
+    height: 100,
     backgroundColor: '#bbe1fd',
     paddingTop: '5%',
     // margin: 10,

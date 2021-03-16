@@ -23,6 +23,8 @@ import PembelianStaff from '../screen/staff/pembelianStaff';
 import PengeluaranStaff from '../screen/staff/pengluaranStaff';
 import LaporanBulananPimpinan from '../screen/pimpinan/laporanBulananPimpinan';
 import LaporanHarianPimpinan from '../screen/pimpinan/laporanHarianPimpinan';
+import BeliStaff from '../screen/staff/beliStaff';
+import SupplaierStaff from '../screen/staff/supplaierStaff';
 
 const Stack = createStackNavigator();
 const Top = createMaterialTopTabNavigator();
@@ -65,6 +67,8 @@ function Navigation() {
         <Stack.Screen name="CategoryStaff" component={CategoryStaff} />
         <Stack.Screen name="PembelianStaff" component={PembelianStaff} />
         <Stack.Screen name="PengeluaranStaff" component={PengeluaranStaff} />
+        <Stack.Screen name="BeliStaff" component={BeliStaff} />
+        <Stack.Screen name="SupplaierStaff" component={SupplaierStaff} />
 
       </Stack.Navigator>
     </NavigationContainer>

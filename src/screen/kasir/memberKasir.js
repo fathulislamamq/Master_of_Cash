@@ -61,10 +61,10 @@ class MenberKasir extends Component {
           <Text style={styles.th}>Daftar Member</Text>
         </View>
 
-        <View style={{flex: 1, backgroundColor: 'deepskyblue'}}>
-          <ScrollView>
-            {this.state.data.map((v, i) => {
-              return (
+        {this.state.data.map((v, i) => {
+          return (
+            <View style={{flex: 1, backgroundColor: 'deepskyblue'}}>
+              <ScrollView>
                 <TouchableOpacity
                   onPress={() =>
                     this.props.navigation.navigate('EditMember', {v: v})
@@ -81,8 +81,8 @@ class MenberKasir extends Component {
 
                       <Text style={{fontWeight: 'bold'}}>id</Text>
 
-                      <Text style={{ fontWeight: 'bold' }}>kode member</Text>
-                      
+                      <Text style={{fontWeight: 'bold'}}>kode member</Text>
+
                       <Text style={{fontWeight: 'bold'}}>telepon</Text>
 
                       <Text style={{fontWeight: 'bold'}}>alamat</Text>
@@ -95,15 +95,15 @@ class MenberKasir extends Component {
                       <Text> : {v.kode_member}</Text>
 
                       <Text> : {v.telepon}</Text>
-                      
+
                       <Text> : {v.alamat}</Text>
                     </View>
                   </View>
                 </TouchableOpacity>
-              );
-            })}
-          </ScrollView>
-        </View>
+              </ScrollView>
+            </View>
+          );
+        })}
 
         <TouchableOpacity
           onPress={() => this.props.navigation.navigate('RegisterMember')}

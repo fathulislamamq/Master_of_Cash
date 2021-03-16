@@ -14,7 +14,7 @@ export default class InventoryStaff extends Component {
   constructor() {
     super();
     this.state = {
-      data: '',
+      data: [],
       token: '',
     };
   }
@@ -53,74 +53,58 @@ export default class InventoryStaff extends Component {
   }
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        <View style={{ alignItems: 'center', flex: 1, paddingTop: '2.5%' }}>
-          <View style={{ width: '95%', height: '90%', backgroundColor: '#f0f1f5', elevation: 10, borderRadius: 10 }}>
+      <View style={{flex: 1}}>
+        <View style={styles.viewTopU}>
+          <View style={styles.viewLogin}>
             <ScrollView>
-              <View style={{borderTopStartRadius:10,borderTopEndRadius:10,marginTop:5,paddingHorizontal:15,backgroundColor:'#158ac5',flexDirection:'row',alignItems:'center',}}>
-              <Image
+              <View style={styles.headerBg}>
+                <Image
                   source={require('../../assets/icon/sort-button-with-three-lines.png')}
-                  style={{width:35,height:35}}
+                  style={styles.headerIcon}
                 />
-
-                <View style={{width:'30%',height:50,marginLeft:10}}> 
-                  <Text style={{fontSize:17,fontWeight:'bold',marginTop:10,marginLeft:'10%'}}>Inventory</Text>
+                <View style={styles.categoryContainer}>
+                  <Text style={styles.categoryText}>Inventory</Text>
                 </View>
-
                 <Image
                   source={require('../../assets/icon/round-account-button-with-user-inside.png')}
-                  style={{ width:35,height:35,marginLeft:'40%',tintColor:'#3c48ae'}}
+                  style={styles.headerIconRight}
                 />
-
               </View>
 
-              <Text style={{ fontSize: 17, fontWeight: 'bold', marginTop: 10, marginLeft: '10%' }}>Daftar Barang</Text>
-              
-              <ScrollView>
-                {this.state.data.ma}
+              <Text style={styles.categoryText}>Daftar Barang</Text>
+
+              {this.state.data.map((v, k) => {
+                return (
+                  <View key={k} style={styles.listContainer}>
+                    <View style={{width: '70%'}}>
+                      <Text style={styles.listText}>{v.nama}</Text>
+
+                      <Text style={styles.qtyText}>Qty: {v.stok}</Text>
+
+                      <Text style={styles.qtyText}>
+                        Harga Beli: {v.harga_beli}
+                      </Text>
+                    </View>
+
+                    <View style={{width: '30%'}}>
+                      <Text style={styles.hargaText}>Harga Jual </Text>
+
+                      <Text style={styles.qtyText}> {v.harga_jual}</Text>
+                    </View>
+                  </View>
+                );
+              })}
             </ScrollView>
-                
-            </ScrollView>
+          </View>
+          <View style={styles.bottomContainer}>
+            <View>
+              <Text style={styles.bottomText}>Rencana</Text>
+              <Text style={styles.totalText}>Rencana</Text>
+            </View>
+            <Text style={styles.chckText}>Rencana</Text>
           </View>
         </View>
       </View>
-      // <View style={{flex: 1}}>
-      //   <View style={styles.viewTopU}>
-      //     <View style={styles.viewLogin}>
-      //       <ScrollView>
-      //         <View style={styles.headerBg}>
-      //           <Image
-      //             source={require('../../assets/icon/sort-button-with-three-lines.png')}
-      //             style={styles.headerIcon}
-      //           />
-      //           <View style={styles.categoryContainer}>
-      //             <Text style={styles.categoryText}>Inventory</Text>
-      //           </View>
-      //           <Image
-      //             source={require('../../assets/icon/round-account-button-with-user-inside.png')}
-      //             style={styles.headerIconRight}
-      //           />
-      //         </View>
-
-      //         <Text style={styles.categoryText}>Daftar Barang</Text>
-      //         <View style={styles.listContainer}>
-      //           <View>
-      //             <Text style={styles.listText}>Nama Barang</Text>
-      //             <Text style={styles.qtyText}>Qty: jumlah barang</Text>
-      //           </View>
-      //           <Text style={styles.hargaText}>Harga Jual</Text>
-      //         </View>
-      //       </ScrollView>
-      //     </View>
-      //     <View style={styles.bottomContainer}>
-      //       <View>
-      //         <Text style={styles.bottomText}>Rencana</Text>
-      //         <Text style={styles.totalText}>Rencana</Text>
-      //       </View>
-      //       <Text style={styles.chckText}>Rencana</Text>
-      //     </View>
-      //   </View>
-      // </View>
     );
   }
 }
@@ -223,9 +207,8 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     width: '94%',
-    height: 60,
     backgroundColor: '#bbe1fd',
-    paddingTop: '5%',
+    paddingVertical: '5%',
     marginLeft: 10,
     marginTop: 5,
     borderRadius: 10,

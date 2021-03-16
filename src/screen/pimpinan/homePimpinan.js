@@ -88,9 +88,9 @@ export default class CashierDash extends Component {
                 </TouchableOpacity>
               </View>
             </ScrollView>
-                    <TouchableOpacity
-                        onPress={()=>this.keluar()}
-                        style={styles.keluar}>
+            <TouchableOpacity
+              onPress={() => this.keluar()}
+              style={styles.keluar}>
               <Text style={{color: 'white', fontWeight: 'bold'}}>Keluar</Text>
             </TouchableOpacity>
           </View>
