@@ -16,7 +16,6 @@ import RegisterMember from '../auth/registerMember';
 import EditMember from '../screen/kasir/editMember';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DetailKategoryKasir from '../screen/kasir/detailKategoryKasir';
-import KategoryBarangKasir from './kasir';
 import InventoryStaff from '../screen/staff/inventoryStaff';
 import CategoryStaff from '../screen/staff/kategoryStaff';
 import PembelianStaff from '../screen/staff/pembelianStaff';
@@ -26,6 +25,11 @@ import LaporanHarianPimpinan from '../screen/pimpinan/laporanHarianPimpinan';
 import BeliStaff from '../screen/staff/beliStaff';
 import SupplaierStaff from '../screen/staff/supplaierStaff';
 import KeluarStaff from '../screen/staff/keluarStaff';
+import InventoryKasir from '../screen/kasir/inventotryKasir';
+import KategoryBarangKasir from '../screen/kasir/kategoryBarangKasir';
+import TransaksiKasir from '../screen/kasir/transaksiKasir';
+import FixTransaksiKasir from '../screen/kasir/fixTransaksiKasir';
+import HistoryTransaksiKasir from '../screen/kasir/historyTransaksiKasir';
 
 const Stack = createStackNavigator();
 const Top = createMaterialTopTabNavigator();
@@ -47,18 +51,35 @@ function Navigation() {
         <Stack.Screen name="MemberKasir" component={MemberKasir} />
         <Stack.Screen name="RegisterMember" component={RegisterMember} />
         <Stack.Screen name="EditMember" component={EditMember} />
+        <Stack.Screen name="InventoryKasir" component={InventoryKasir} />
+        <Stack.Screen name="TransaksiKasir" component={TransaksiKasir} />
+        <Stack.Screen name="FixTransaksiKasir" component={FixTransaksiKasir} />
+
+        <Stack.Screen
+          name="HistoryTransaksiKasir"
+          component={HistoryTransaksiKasir}
+        />
+
         <Stack.Screen
           name="KategoryBarangKasir"
           component={KategoryBarangKasir}
         />
+
         <Stack.Screen
           name="DetailKategoryKasir"
           component={DetailKategoryKasir}
         />
+
         {/* untuk Pimpinan */}
         <Stack.Screen name="pimpinan" component={HomePimpinan} />
-        <Stack.Screen name="LaporanBulananPimpinan" component={LaporanBulananPimpinan} />
-        <Stack.Screen name="LaporanHarianPimpinan" component={LaporanHarianPimpinan} />
+        <Stack.Screen
+          name="LaporanBulananPimpinan"
+          component={LaporanBulananPimpinan}
+        />
+        <Stack.Screen
+          name="LaporanHarianPimpinan"
+          component={LaporanHarianPimpinan}
+        />
 
         {/* untuk Member */}
         <Stack.Screen name="member" component={HomeMember} />
@@ -71,7 +92,6 @@ function Navigation() {
         <Stack.Screen name="BeliStaff" component={BeliStaff} />
         <Stack.Screen name="SupplaierStaff" component={SupplaierStaff} />
         <Stack.Screen name="KeluarStaff" component={KeluarStaff} />
-
       </Stack.Navigator>
     </NavigationContainer>
   );

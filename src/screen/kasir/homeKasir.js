@@ -13,7 +13,7 @@ export default class HomeKasir extends Component {
   constructor() {
     super();
     this.state = {
-      data: [],
+      data: {},
       token: '',
     };
   }
@@ -31,7 +31,8 @@ export default class HomeKasir extends Component {
       .then((respon) => respon.json())
       .then((resjson) => {
         console.log('ini kasir', resjson.data[0]);
-        this.setState({data: resjson.data[0]});
+        console.log('ini token ', this.state.token);
+        this.setState({data: resjson.data});
       })
       .catch((error) => {
         console.log('errornya adalah: ' + error);
@@ -82,7 +83,11 @@ export default class HomeKasir extends Component {
           </View>
 
           <View style={styles.category}>
-            <TouchableOpacity style={styles.textContainer}>
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate('HistoryTransaksiKasir')
+              }
+              style={styles.textContainer}>
               <Image
                 source={require('../../assets/icon/city-buildings-silhouette.png')}
                 style={styles.categoryIcon}
@@ -91,7 +96,9 @@ export default class HomeKasir extends Component {
               <Text style={{marginLeft: 10, fontWeight: 'bold'}}>Sale</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.textContainer}>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('TransaksiKasir')}
+              style={styles.textContainer}>
               <Image
                 source={require('../../assets/icon/city-buildings-silhouette.png')}
                 style={styles.categoryIcon}
@@ -102,7 +109,9 @@ export default class HomeKasir extends Component {
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.textContainer}>
+            <TouchableOpacity
+              onPress={() => this.props.navigation.navigate('InventoryKasir')}
+              style={styles.textContainer}>
               <Image
                 source={require('../../assets/icon/city-buildings-silhouette.png')}
                 style={styles.categoryIcon}
@@ -124,8 +133,10 @@ export default class HomeKasir extends Component {
               <Text style={{marginLeft: 10, fontWeight: 'bold'}}>Members</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity 
-            onPress={()=>this.props.navigation.navigate('KategoryBarangKasir')}
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate('KategoryBarangKasir')
+              }
               style={styles.textContainer}>
               <Image
                 source={require('../../assets/icon/city-buildings-silhouette.png')}

@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Modal,
+  RefreshControl,
   Alert,
   TouchableOpacity,
 } from 'react-native';
@@ -18,6 +18,7 @@ class MenberKasir extends Component {
     this.state = {
       token: '',
       data: [],
+      refresh:false
     };
   }
 
@@ -64,7 +65,16 @@ class MenberKasir extends Component {
         {this.state.data.map((v, i) => {
           return (
             <View style={{flex: 1, backgroundColor: 'deepskyblue'}}>
-              <ScrollView>
+              <ScrollView
+                refreshControl={
+                  <RefreshControl
+                    refreshing={this.state.refresh}
+                    onRefresh={() => {
+                      this.setState({refresh: true});
+                      this.lihat();
+                    }}
+                  />
+                }>
                 <TouchableOpacity
                   onPress={() =>
                     this.props.navigation.navigate('EditMember', {v: v})
