@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {Component} from 'react';
 import {
   Text,
@@ -11,6 +12,46 @@ import {
 // import CheckBox from '@react-native-community/checkbox';
 
 export default class CategoryStaff extends Component {
+  constructor() {
+    super();
+    this.state = {
+      data: [],
+      token: '',
+    };
+  }
+  kategori = () => {
+    const url = `https://master-of-sale.herokuapp.com/api/kategori`;
+
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.state.token}`,
+      },
+    })
+      .then((respon) => respon.json())
+      .then((resjson) => {
+        console.log('ini kategori ', resjson.data);
+        this.setState({data: resjson.data});
+      })
+      .catch((error) => {
+        console.log('errornya adalah: ' + error);
+        this.setState({loading: false});
+      });
+  };
+
+  componentDidMount() {
+    AsyncStorage.getItem('token').then((token) => {
+      if (token != null) {
+        this.setState({token: token});
+        this.kategori();
+      } else {
+        console.log('gak ada token');
+      }
+    });
+  }
+
   render() {
     return (
       <View style={{flex: 1}}>
@@ -42,48 +83,17 @@ export default class CategoryStaff extends Component {
               <Text style={styles.headerText}>Dashboard</Text>
             </View> */}
               <View style={styles.category}>
-                <TouchableOpacity style={styles.textContainer}>
-                  <Image
-                    source={require('../../assets/icon/snacks.png')}
-                    style={styles.categoryIcon}
-                  />
-                  <Text style={styles.categoryText}>Makanan</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.textContainer}>
-                  <Image
-                    source={require('../../assets/icon/softdrinks.png')}
-                    style={styles.categoryIcon}
-                  />
-                  <Text style={styles.categoryText}>Minuman</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.textContainer}>
-                  <Image
-                    source={require('../../assets/icon/electronics.png')}
-                    style={styles.categoryIcon}
-                  />
-                  <Text style={styles.categoryText}>Elektronik</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.textContainer}>
-                  <Image
-                    source={require('../../assets/icon/sneakers.png')}
-                    style={styles.categoryIcon}
-                  />
-                  <Text style={styles.categoryText}>Sepatu</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.textContainer}>
-                  <Image
-                    source={require('../../assets/icon/male-clothes.png')}
-                    style={styles.categoryIcon}
-                  />
-                  <Text style={styles.categoryText}>Pakaian</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.textContainer}>
-                  <Image
-                    source={require('../../assets/icon/watch.png')}
-                    style={styles.categoryIcon}
-                  />
-                  <Text style={styles.categoryText}>Aksesories</Text>
-                </TouchableOpacity>
+                {this.state.data.map((v, k) => {
+                  return (
+                    <TouchableOpacity key={k} style={styles.textContainer}>
+                      <Image
+                        source={require('../../assets/icon/snacks.png')}
+                        style={styles.categoryIcon}
+                      />
+                      <Text style={styles.categoryText}>{v.nama}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
               </View>
 
               <View style={styles.listContainer}>

@@ -5,39 +5,65 @@ import {
   StyleSheet,
   View,
   Image,
-  ImageBackground,
+  Alert,
+  TextInput,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 // import CheckBox from '@react-native-community/checkbox';
 
-export default class PengeluaranStaff extends Component {
+export default class KeluarStaff extends Component {
   constructor() {
     super();
     this.state = {
       data: [],
       loading: false,
       token: '',
+      keterangan: '',
+      biaya: '',
     };
   }
 
-  barang = () => {
+  jual = () => {
+    const {keterangan, biaya} = this.state;
+
+    this.setState({loading: true});
+
     const url = `https://master-of-sale.herokuapp.com/api/pengeluaran`;
 
     fetch(url, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
         Authorization: `Bearer ${this.state.token}`,
       },
+      body: JSON.stringify({
+        keterangan: keterangan,
+        biaya: biaya,
+      }),
     })
       .then((respon) => respon.json())
       .then((resjson) => {
         console.log('ini pengeluarannya ', resjson.data);
-        // console.log('ini token', this.state.token);
-        this.setState({data: resjson.data});
+        this.setState({data: resjson.data, loading: false});
+
+        Alert.alert(
+          'Berhasil',
+          `Keterangan: ${this.state.data.keterangan}` +
+            `\nBiaya: ${this.state.data.biaya}`,
+
+          [
+            {
+              text: 'OK',
+              onPress: () => console.log('OK Pressed'),
+              style: 'cancel',
+            },
+          ],
+        );
+        this.props.navigation.navigate('PengeluaranStaff');
       })
       .catch((error) => {
         console.log('errornya adalah: ' + error);
@@ -48,8 +74,8 @@ export default class PengeluaranStaff extends Component {
   componentDidMount() {
     AsyncStorage.getItem('token').then((token) => {
       if (token != null) {
-        this.setState({token: token});
-        this.barang();
+          this.setState({ token: token });
+        //   this.jual()
       } else {
         console.log('gak ada token');
       }
@@ -80,85 +106,53 @@ export default class PengeluaranStaff extends Component {
                 />
               </View>
 
-              <View
-                style={{
-                  width: '100%',
-                  backgroundColor: 'black',
-                  height: 1,
-                }}
-              />
-              {this.state.data.map((v, k) => {
-                return (
-                  <View key={k} style={styles.listContainer}>
-                    {/* <Image
-                  source={require('../../assets/icon/watch.png')}
-                  style={styles.listIcon}
-                /> */}
-                    <View>
-                      <Text style={styles.listText}>{v.created_at}</Text>
-                      <Text style={styles.qtyText}>
-                        <Text style={{fontWeight: 'bold'}}>Keterangan</Text> :{' '}
-                        {v.keterangan}
-                      </Text>
-                      <Text style={styles.qtyText}>
-                        <Text style={{fontWeight: 'bold'}}>Biaya</Text> :{' '}
-                        {v.biaya}
-                      </Text>
-                    </View>
-                  </View>
-                );
-              })}
+              <Text style={styles.categoryText}>Keterangan </Text>
 
               <View
                 style={{
-                  width: '100%',
-                  backgroundColor: 'black',
-                  height: 1,
-                }}
-              />
-            </ScrollView>
-
-            <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('KeluarStaff')}
-              style={styles.rmb}>
-              <View style={styles.vpm}>
-                <Icon name="add" size={30} />
+                  padding: 5,
+                  height: 50,
+                  borderWidth: 1,
+                  margin: 10,
+                  backgroundColor: 'white',
+                }}>
+                <TextInput
+                  placeholder="masukkan keterangan"
+                  value={this.state.keterangan}
+                  onChangeText={(t) => this.setState({keterangan: t})}
+                  style={{width: '100%'}}
+                />
               </View>
 
-              <Text style={{fontWeight: 'bold',color:'#bbe1fd'}}>Add List</Text>
-              <Text style={{fontWeight: 'bold',color:'#bbe1fd'}}>Pengeluaran</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.bottomContainer}>
-            <View>
-              <Text style={styles.bottomText}>Total Item: 10,</Text>
-              <Text style={styles.totalText}>Harga: $85</Text>
-            </View>
-            <View
-              style={{
-                // backgroundColor: 'blue',
-                // marginRight: -50,
-                textAlign: 'right',
-                flex: 1,
-                width: 90,
-                // height: 25,
-                // borderWidth: 3,
-                // marginLeft: '30%',
-                marginTop: -15,
-                // borderRadius: 8,
-                // backgroundColor: 'blue',
-              }}>
-              <Text
+              <Text style={styles.categoryText}>Total Biaya </Text>
+
+              <View
                 style={{
+                  flexDirection: 'row',
                   alignItems: 'center',
-                  alignContent: 'center',
-                  alignSelf: 'center',
-                  fontWeight: 'bold',
-                  color: 'blue',
+                  padding: 5,
+                  height: 50,
+                  borderWidth: 1,
+                  margin: 10,
+                  backgroundColor: 'white',
                 }}>
-                $2000
-              </Text>
-            </View>
+                <Text style={{width: '10%'}}>Rp. </Text>
+                <TextInput
+                  placeholder="masukkan nominal"
+                  value={this.state.biaya}
+                  onChangeText={(t) => this.setState({biaya: t})}
+                  style={{width: '90%'}}
+                />
+              </View>
+            </ScrollView>
+
+            <TouchableOpacity onPress={() => this.jual()} style={styles.ok}>
+              {this.state.loading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text style={{fontWeight: 'bold', color: 'white'}}>Simpan</Text>
+              )}
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -167,11 +161,13 @@ export default class PengeluaranStaff extends Component {
 }
 
 const styles = StyleSheet.create({
-  rmb: {
-    position: 'absolute',
-    right: 10,
-    bottom: 10,
+  ok: {
+    height: 50,
+    justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#158ac5',
+    margin: 10,
+    borderRadius: 10,
   },
   vpm: {
     height: 40,
@@ -212,7 +208,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   categoryText: {
-    // color: 'white',
+    color: 'white',
     fontSize: 17,
     fontWeight: 'bold',
     marginLeft: '10%',
